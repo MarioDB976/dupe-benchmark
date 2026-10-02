@@ -1,0 +1,166 @@
+---
+// Dati della matrice comparativa (Cuffie)
+const metrics = [
+  { id: 'anc', label: 'CANCELLAZIONE RUMORE (ANC)' },
+  { id: 'audio', label: 'QUALITÀ AUDIO (HI-RES)' },
+  { id: 'battery', label: 'DURATA BATTERIA (ORE)' },
+  { id: 'comfort', label: 'ERGONOMIA & COMFORT' },
+  { id: 'mic', label: 'QUALITÀ MICROFONO' },
+];
+
+const benchmark = {
+  name: "SONY WH-1000XM5",
+  brand: "SONY",
+  priceLabel: "PREZZO: 100 (Parametrato ~350€)",
+  scores: { anc: 100, audio: 100, battery: 100, comfort: 100, mic: 100 },
+  synthetic: 100
+};
+
+const dupes = [
+  {
+    name: "SOUNDCORE SPACE ONE",
+    brand: "soundcore",
+    priceLabel: "PREZZO: 30 (Sconto: 70%)",
+    headerColor: "bg-emerald-600",
+    scores: { anc: 85, audio: 80, battery: 110, comfort: 90, mic: 75 },
+    synthetic: 88,
+    link: "https://amazon.it"
+  },
+  {
+    name: "SENNHEISER ACCENTUM PLUS",
+    brand: "SENNHEISER",
+    priceLabel: "PREZZO: 50 (Sconto: 50%)",
+    headerColor: "bg-emerald-700",
+    scores: { anc: 80, audio: 90, battery: 100, comfort: 85, mic: 85 },
+    synthetic: 88,
+    link: "https://amazon.it"
+  },
+  {
+    name: "SONY WH-CH720N",
+    brand: "SONY",
+    priceLabel: "PREZZO: 35 (Sconto: 65%)",
+    headerColor: "bg-amber-500",
+    scores: { anc: 70, audio: 75, battery: 100, comfort: 70, mic: 65 },
+    synthetic: 76,
+    link: "https://amazon.it"
+  },
+  {
+    name: "QCY H2 PRO",
+    brand: "QCY",
+    priceLabel: "PREZZO: 10 (Sconto: 90%)",
+    headerColor: "bg-orange-600",
+    scores: { anc: 50, audio: 60, battery: 90, comfort: 60, mic: 55 },
+    synthetic: 63,
+    link: "https://amazon.it"
+  }
+];
+
+function getScoreBadge(score) {
+  if (score >= 100) return "bg-blue-500 text-white";
+  if (score >= 85) return "bg-emerald-400 text-slate-900";
+  if (score >= 70) return "bg-amber-300 text-slate-900";
+  return "bg-orange-400 text-white";
+}
+---
+
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Benchmark a Colpo d'Occhio</title>
+  </head>
+  <body class="bg-slate-900 text-slate-100 min-h-screen py-10 px-4">
+    <div class="max-w-7xl mx-auto">
+      
+      <!-- Intestazione -->
+      <div class="text-center mb-8">
+        <h1 class="text-2xl md:text-3xl font-extrabold tracking-wide uppercase">
+          Le Alternative Intelligenti - Cuffie Musicali
+        </h1>
+        <p class="text-slate-400 text-sm mt-1">Confronto prestazionale normalizzato su base 100</p>
+      </div>
+
+      <!-- Tabella comparativa a colonne -->
+      <div class="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950 p-4 shadow-2xl">
+        <div class="grid grid-cols-6 gap-3 min-w-[900px] text-center items-center">
+          
+          <!-- Riga Intestazione Prodotti -->
+          <div class="font-bold text-xs uppercase text-slate-400 text-left pl-3">Parametro</div>
+          
+          <!-- Colonna Benchmark -->
+          <div class="bg-blue-600 rounded-t-lg p-3 text-white">
+            <div class="text-[10px] font-bold uppercase tracking-wider">Riferimento</div>
+            <div class="text-xs font-semibold mt-1">{benchmark.name}</div>
+            <div class="text-[10px] text-blue-200 mt-1">{benchmark.priceLabel}</div>
+          </div>
+
+          <!-- Colonne Alternative -->
+          {dupes.map(dupe => (
+            <div class={`${dupe.headerColor} rounded-t-lg p-3 text-white`}>
+              <div class="text-[10px] font-bold uppercase tracking-wider">Alternativa Dupe</div>
+              <div class="text-xs font-semibold mt-1 truncate">{dupe.name}</div>
+              <div class="text-[10px] text-white/80 mt-1">{dupe.priceLabel}</div>
+            </div>
+          ))}
+
+          <!-- Righe Metriche Tecniche -->
+          {metrics.map(metric => (
+            <>
+              <div class="text-left font-bold text-xs text-slate-300 py-3 pl-3 bg-slate-900/60 rounded">
+                {metric.label}
+              </div>
+              
+              <div class="py-2.5">
+                <span class="inline-block w-full py-1.5 rounded font-extrabold text-sm bg-blue-500 text-white">
+                  100
+                </span>
+              </div>
+
+              {dupes.map(dupe => (
+                <div class="py-2.5">
+                  <span class={`inline-block w-full py-1.5 rounded font-extrabold text-sm ${getScoreBadge(dupe.scores[metric.id])}`}>
+                    {dupe.scores[metric.id]}
+                  </span>
+                </div>
+              ))}
+            </>
+          ))}
+
+          <!-- Riga Indice Sintetico Finale -->
+          <div class="text-left font-extrabold text-xs text-slate-100 py-3 pl-3">
+            INDICE SINTETICO
+          </div>
+          <div class="bg-slate-800 py-2.5 rounded font-black text-sm text-blue-400">
+            100
+          </div>
+          {dupes.map(dupe => (
+            <div class="bg-slate-800 py-2.5 rounded font-black text-sm text-emerald-400">
+              {dupe.synthetic}
+            </div>
+          ))}
+
+          <!-- Riga Call To Action / Link -->
+          <div></div>
+          <div class="pt-2 text-xs text-slate-500">Benchmark</div>
+          {dupes.map(dupe => (
+            <div class="pt-2">
+              <a 
+                href={dupe.link} 
+                target="_blank" 
+                class="block w-full py-1.5 px-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded shadow transition">
+                Vedi Offerta
+              </a>
+            </div>
+          ))}
+
+        </div>
+      </div>
+
+      <!-- Footer e Disclaimer Obbligatorio -->
+      <div class="mt-6 text-xs text-slate-500 text-center">
+        *Prezzi e disponibilità aggiornati via API. I punteggi rappresentano le prestazioni in centesimi rapportate all'originale.
+      </div>
+
+    </div>
+  </body>
+</html>
